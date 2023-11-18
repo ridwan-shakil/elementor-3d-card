@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name:       Elementor 3d card
- * Plugin URI:        
+ * Plugin URI:
  * Description:       Custom Elementor card addon.
  * Version:           1.0.0
  * Requires at least: 5.2
@@ -19,31 +19,19 @@
  */
 
 
-if (!defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
-};
+}
+
 
 function elementor_3d_card() {
+	// Check if Elementor plugin is active
+	if ( defined( 'ELEMENTOR_VERSION' ) ) {
+		// Load plugin file
+		require_once __DIR__ . '/widgets-loader.php';
 
-	// Load plugin file
-	require_once(__DIR__ . '/widgets-loader.php');
-
-	// Run the plugin
-	\widget_loader\rs_widgets::instance();
+		// Run the plugin
+		\widget_loader\rs_widgets::instance();
+	}
 }
-add_action('plugins_loaded', 'elementor_3d_card');
-
-
-// register new category 
-
-// function rs_add_elementor_widget_category($elements_manager) {
-
-// 	$elements_manager->add_category(
-// 		'rs_elementor_widgets',
-// 		[
-// 			'title' => esc_html__('RS Widgets', 'textdomain'),
-// 			'icon' => 'fa fa-plug',
-// 		]
-// 	);
-// }
-// add_action('elementor/elements/categories_registered', 'rs_add_elementor_widget_category');
+add_action( 'plugins_loaded', 'elementor_3d_card' );

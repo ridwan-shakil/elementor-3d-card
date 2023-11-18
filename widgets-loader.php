@@ -68,10 +68,9 @@ final class rs_widgets {
     public function __construct() {
 
         if ($this->is_compatible()) {
-            add_action('elementor/init', [$this, 'init']);
+            add_action('elementor/init', array($this, 'init'));
         }
         // add_action('wp_enqueue_scripts', [$this, 'rs_load_scripts']);
-
     }
 
 
@@ -88,19 +87,19 @@ final class rs_widgets {
 
         // Check if Elementor installed and activated
         if (!did_action('elementor/loaded')) {
-            add_action('admin_notices', [$this, 'admin_notice_missing_main_plugin']);
+            add_action('admin_notices', array($this, 'admin_notice_missing_main_plugin'));
             return false;
         }
 
         // Check for required Elementor version
         if (!version_compare(ELEMENTOR_VERSION, self::MINIMUM_ELEMENTOR_VERSION, '>=')) {
-            add_action('admin_notices', [$this, 'admin_notice_minimum_elementor_version']);
+            add_action('admin_notices', array($this, 'admin_notice_minimum_elementor_version'));
             return false;
         }
 
         // Check for required PHP version
         if (version_compare(PHP_VERSION, self::MINIMUM_PHP_VERSION, '<')) {
-            add_action('admin_notices', [$this, 'admin_notice_minimum_php_version']);
+            add_action('admin_notices', array($this, 'admin_notice_minimum_php_version'));
             return false;
         }
 
@@ -117,7 +116,9 @@ final class rs_widgets {
      */
     public function admin_notice_missing_main_plugin() {
 
-        if (isset($_GET['activate'])) unset($_GET['activate']);
+        if (isset($_GET['activate'])) {
+            unset($_GET['activate']);
+        }
 
         $message = sprintf(
             /* translators: 1: Plugin name 2: Elementor */
@@ -139,7 +140,9 @@ final class rs_widgets {
      */
     public function admin_notice_minimum_elementor_version() {
 
-        if (isset($_GET['activate'])) unset($_GET['activate']);
+        if (isset($_GET['activate'])) {
+            unset($_GET['activate']);
+        }
 
         $message = sprintf(
             /* translators: 1: Plugin name 2: Elementor 3: Required Elementor version */
@@ -162,7 +165,9 @@ final class rs_widgets {
      */
     public function admin_notice_minimum_php_version() {
 
-        if (isset($_GET['activate'])) unset($_GET['activate']);
+        if (isset($_GET['activate'])) {
+            unset($_GET['activate']);
+        }
 
         $message = sprintf(
             /* translators: 1: Plugin name 2: PHP 3: Required PHP version */
@@ -187,8 +192,8 @@ final class rs_widgets {
      */
     public function init() {
 
-        add_action('elementor/widgets/register', [$this, 'register_widgets']);
-        add_action('wp_enqueue_scripts', [$this, 'rs_load_scripts']);
+        add_action('elementor/widgets/register', array($this, 'register_widgets'));
+        add_action('wp_enqueue_scripts', array($this, 'rs_load_scripts'));
     }
 
     /**
@@ -204,20 +209,10 @@ final class rs_widgets {
     public function rs_load_scripts() {
 
         wp_enqueue_style('card-3d-css', plugins_url('assets/css/card-3d.css', __FILE__), array(), '1.0.0');
+        wp_enqueue_style('card-extra-css', plugins_url('assets/css/card.css', __FILE__), array(), '1.0.0');
 
-        // wp_enqueue_script('jquery');
         wp_enqueue_script('material-cards-js', plugins_url('assets/js/card-3d.js', __FILE__), array('jquery'), '1.0.0');
-
-        // wp_enqueue_style('bootstrap-v3', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css', array(), '3.3.5');
-        // wp_enqueue_style('font-awesome');
-        // wp_enqueue_style("rs-font-awesome-cdn", 'http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css');
-
-
-
-
     }
-
-
 
 
     /**
@@ -231,7 +226,7 @@ final class rs_widgets {
      */
     public function register_widgets($widgets_manager) {
 
-        require_once(__DIR__ . '/widgets/card-3d.php');
+        require_once __DIR__ . '/widgets/card3d.php';
 
         $widgets_manager->register(new Card3d());
     }
